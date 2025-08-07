@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cadastrar Produto</title>
+</head>
+<body>
+  <h1>Cadastrar Produto</h1>
+  <form id="product-form">
+    <div>
+      <label for="name">Nome:</label>
+      <input type="text" id="name" name="name" required />
+    </div>
+    <div>
+      <label for="price">Preço:</label>
+      <input type="number" id="price" name="price" required step="0.01" />
+    </div>
+    <button type="submit">Enviar</button>
+  </form>
+
+  <script>
+    document.getElementById('product-form').addEventListener('submit', async function(event) {
+      event.preventDefault();
+
+      const name  = document.getElementById('name').value.trim();
+      const price = parseFloat(document.getElementById('price').value);
+
+      try {
+        const res = await fetch('http://localhost:3333/products', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, price })
+        });
+
+        if (!res.ok) {
+          throw new Error(`Status ${res.status}`);
+        }
+
+        const produtoCriado = await res.json();
+        alert(`Produto cadastrado com sucesso! ID: ${produtoCriado.id}`);
+      } catch (err) {
+        console.error(err);
+        alert(`Falha ao cadastrar produto: ${err.message}`);
+      }
+    });
+  </script>
+</body>
+</html>

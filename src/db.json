@@ -1,0 +1,6 @@
+{
+  "products": [
+    { "name": "teclado", "price": 500 },
+    { "name": "mesa", "price": 900 }
+  ]
+}
